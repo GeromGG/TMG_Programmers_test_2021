@@ -18,7 +18,8 @@
                  TextWrapping="Wrap" 
                  VerticalAlignment="Center" 
                  Height="20" 
-                 Grid.Row="0"/>
+                 Grid.Row="0"
+                 KeyDown="OnKeyDownHandler"/>
         <Button Content="Подсчитать"
                 x:Name="CalculateButton"
                 Click="Calculate_Click" 

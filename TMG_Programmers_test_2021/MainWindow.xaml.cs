@@ -4,13 +4,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using TMG_Programmers_test_2021.Model;
 
 namespace TMG_Programmers_test_2021
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -53,7 +51,16 @@ namespace TMG_Programmers_test_2021
             tableView.ItemsSource = new ObservableCollection<SummaryTable>(SummaryTables);
             if (listOfInvalidIdentifiers.Count > 0)
             {
-                MessageBox.Show($"Данные идентификаторы либо не входят в диапозон от 1 до 20, либо не являются чилом: {String.Join(", ", listOfInvalidIdentifiers)}", "Что-то пошло не так", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Данные идентификаторы либо не входят в диапозон от 1 до 20, либо не являются чилом: {String.Join(", ", listOfInvalidIdentifiers)}",
+                    "Что-то пошло не так", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                Calculate_Click(sender, e);
             }
         }
 
