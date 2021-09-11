@@ -11,6 +11,14 @@ namespace TMG_Programmers_test_2021
 {
     public partial class MainWindow : Window
     {
+        //Ширина колонок относительно всей таблицы
+        private const double COL1 = 0.05;
+        private const double COL2 = 0.64;
+        private const double COL3 = 0.15;
+        private const double COL4 = 0.16;
+
+        private readonly char[] separators = new char[] { ';', ',' };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -24,22 +32,25 @@ namespace TMG_Programmers_test_2021
 
             var listOfInvalidIdentifiers = new List<string>();
 
-            char[] separators = new char[] {';', ','};
-
             string[] allIdentifiers = enteringIdentifiers.Text.Replace(" ", String.Empty).Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
             var identifiers = allIdentifiers.Distinct().ToArray();
 
             for (int i = 0; i < identifiers.Length; i++)
             {
+                if (identifiers[i] is null)
+                {
+                    MessageBox.Show($"идентификатор под индексом {i} содержит пустое значение", "Что-то пошло не так", MessageBoxButton.OK, MessageBoxImage.Error);
+                    continue;
+                }
+
                 if (!Int32.TryParse(identifiers[i], out var number) || number > 20 || number <= 0)
                 {
                     listOfInvalidIdentifiers.Add(identifiers[i]);
                     continue;
                 }
 
-                var response = await RequestService.HttpGetRequest(identifiers[i]);
-
+                var response = await RequestService.HttpGetRequestAsync(identifiers[i]);
                 if (response.IsError)
                 {
                     MessageBox.Show(response.MessageError, "Что-то пошло не так", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -66,19 +77,15 @@ namespace TMG_Programmers_test_2021
 
         private void ProductsListView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ListView listView = sender as ListView;
-            GridView gView = listView.View as GridView;
+            ListView listView = (ListView)sender;
+            GridView gView = (GridView)listView.View;
 
             var workingWidth = listView.ActualWidth - SystemParameters.VerticalScrollBarWidth;
-            var col1 = 0.05;
-            var col2 = 0.64;
-            var col3 = 0.15;
-            var col4 = 0.16;
 
-            gView.Columns[0].Width = workingWidth * col1;
-            gView.Columns[1].Width = workingWidth * col2;
-            gView.Columns[2].Width = workingWidth * col3;
-            gView.Columns[3].Width = workingWidth * col4;
+            gView.Columns[0].Width = workingWidth * COL1;
+            gView.Columns[1].Width = workingWidth * COL2;
+            gView.Columns[2].Width = workingWidth * COL3;
+            gView.Columns[3].Width = workingWidth * COL4;
         }
     }
 }

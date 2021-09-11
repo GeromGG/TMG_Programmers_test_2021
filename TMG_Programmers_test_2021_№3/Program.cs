@@ -6,46 +6,56 @@ namespace TMG_Programmers_test_2021__3
 {
     public class Program
     {
+        private static readonly Regex rgx = new Regex(@"\W+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         public static void Main(string[] args)
         {
-
+            Regex rgx = new Regex(@"\W+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            string stringRus = rgx.Replace("«Не выходи из комнаты, не совершай ошибку.» ", String.Empty);
+            Console.WriteLine(stringRus);
+            Console.WriteLine(GetIndexPetrenko(stringRus));
         }
 
-        public Dictionary<string, string> Compare(string[] rus, string[] eng)
+        public static Dictionary<string, List<string>> ComparePetrenkoIndex(string[] rus, string[] eng)
         {
-            Dictionary<string, string> matchingLines = new Dictionary<string, string>();
+            var matchingLines = new Dictionary<string, List<string>>();
+
 
             for (int i = 0; i < rus.Length; i++)
             {
-                Regex rgx = new Regex(@"\p{IsBasicLatin}+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                var stringRus = rgx.Replace(rus[i], String.Empty);
-                
-
+                string stringRus = rgx.Replace(rus[i], String.Empty);
                 for (int c = 0; c < eng.Length; c++)
                 {
-                    var mstr1 = eng[c].Split("|", StringSplitOptions.RemoveEmptyEntries);
-                    Regex rgx1 = new Regex(@"\W+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-                    var stringEng = rgx1.Replace(mstr1[0], String.Empty);
-                    var stringEngComment = rgx1.Replace(mstr1[1], String.Empty);
+                    var separation = eng[c].Split("|", StringSplitOptions.RemoveEmptyEntries);
+                    var stringEng = rgx.Replace(separation[0], String.Empty);
+                    var stringEngComment = rgx.Replace(separation[1], String.Empty);
 
-                    if (IndexPetrenko(stringRus) == IndexPetrenko(stringEng) + IndexPetrenko(stringEngComment))
+                    if (GetIndexPetrenko(stringRus) == GetIndexPetrenko(stringEng) + GetIndexPetrenko(stringEngComment))
                     {
-                        matchingLines.Add(rus[i], eng[c]);
+                        if (matchingLines.TryGetValue(rus[i], out var list))
+                        {
+                            list.Add(eng[c]);
+                        }
+                        else
+                        {
+                            var listEngString = new List<string>();
+                            listEngString.Add(eng[c]);
+                            matchingLines.Add(rus[i], listEngString);
+                        }
                     }
                 }
             }
-
             return matchingLines;
         }
 
-        private double IndexPetrenko(string str)
+        private static double GetIndexPetrenko(string str)
         {
             double index = 0;
             var series = 0.5;
             for (int b = 0; b < str.Length; b++)
             {
-                index = index + series;
-                series = series + 1;
+                index += series;
+                series ++;
             }
             return index = index * str.Length;
         }
