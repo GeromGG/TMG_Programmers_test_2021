@@ -11,7 +11,7 @@ namespace TMG_Programmers_test_2021
 {
     public partial class MainWindow : Window
     {
-        //Ширина колонок относительно всей таблицы
+        //Column width relative to the entire table/Ширина колонок относительно всей таблицы
         private const double COL1 = 0.05;
         private const double COL2 = 0.64;
         private const double COL3 = 0.15;
@@ -26,24 +26,27 @@ namespace TMG_Programmers_test_2021
 
         private List<SummaryTable> SummaryTables { get; set; } = new List<SummaryTable>();
 
+
         private async void Calculate_Click(object sender, RoutedEventArgs e)
         {
             SummaryTables.Clear();
 
             var listOfInvalidIdentifiers = new List<string>();
 
+            //remove extra spaces and create an array of identifiers / убираем лишние пробелы и создаем массив идентификаторов
             string[] allIdentifiers = enteringIdentifiers.Text.Replace(" ", String.Empty).Split(separators, StringSplitOptions.RemoveEmptyEntries);
-
+            //remove duplicated elements / удаляем дублированные элементы
             var identifiers = allIdentifiers.Distinct().ToArray();
 
             for (int i = 0; i < identifiers.Length; i++)
             {
+
                 if (identifiers[i] is null)
                 {
                     MessageBox.Show($"идентификатор под индексом {i} содержит пустое значение", "Что-то пошло не так", MessageBoxButton.OK, MessageBoxImage.Error);
                     continue;
                 }
-
+                //checking for the condition that the identifier is a digit from 1 to 20 /проверка на условие что идентификатор цифра от 1 до 20
                 if (!Int32.TryParse(identifiers[i], out var number) || number > 20 || number <= 0)
                 {
                     listOfInvalidIdentifiers.Add(identifiers[i]);
@@ -59,7 +62,9 @@ namespace TMG_Programmers_test_2021
 
                 SummaryTables.Add(new SummaryTable(identifiers[i], response.Message));
             }
+            //display the table / выводим таблицу
             tableView.ItemsSource = new ObservableCollection<SummaryTable>(SummaryTables);
+
             if (listOfInvalidIdentifiers.Count > 0)
             {
                 MessageBox.Show($"Данные идентификаторы либо не входят в диапозон от 1 до 20, либо не являются чилом: {String.Join(", ", listOfInvalidIdentifiers)}",
@@ -67,6 +72,11 @@ namespace TMG_Programmers_test_2021
             }
         }
 
+        /// <summary>
+        /// enter press test / проверка нажатия на энтер
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -75,6 +85,11 @@ namespace TMG_Programmers_test_2021
             }
         }
 
+        /// <summary>
+        /// fits the width of the columns to the window size / подгоняет ширену столбцов под размер окна
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ProductsListView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ListView listView = (ListView)sender;

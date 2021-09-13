@@ -7,6 +7,7 @@ namespace TMG_Programmers_test_2021.Model
     {
 
         private static readonly char[] _separators = new char[] { ' ', '.', ',', '—' };
+        //patch with Russian and European vowels / патч с русскими и европейскими гласными
         private static readonly string _pattern = @"[ӧауоыиэяюёеaeiіouäöüÄÖÜAEIІOUАЕЁИОУЫЭЮЯӦ]+";
         private static readonly Regex rgx = new Regex(_pattern);
 

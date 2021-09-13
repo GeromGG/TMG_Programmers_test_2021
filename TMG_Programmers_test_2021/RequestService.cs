@@ -22,16 +22,22 @@ namespace TMG_Programmers_test_2021
             var response = new Response();
             try
             {
+                //adding headers for authorization / добавление заголовков для авторизации 
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Add("TMG-Api-Key", authorizationKey);
+
+                //send a request to the server / посылаем запрос на сервер 
                 HttpResponseMessage responseMessage = await client.GetAsync($"{serverApiRoot}{address}{id}");
                 responseMessage.EnsureSuccessStatusCode();
                 var message = await responseMessage.Content.ReadAsStringAsync();
+
+                //Deserialize the Json file received from the server / Десериализуем полученый от сервера Json фаил
                 response = JsonConvert.DeserializeObject<Response>(message);
                 response.IsError = false;
             }
             catch (Exception e)
             {
+
                 response.MessageError = e.Message;
                 response.IsError = true;
             }

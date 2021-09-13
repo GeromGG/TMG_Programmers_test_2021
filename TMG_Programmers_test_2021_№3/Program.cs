@@ -6,14 +6,14 @@ namespace TMG_Programmers_test_2021__3
 {
     public class Program
     {
+        //declare a regular expression (everything except letters)/обьявляем регулярное выражение (все кроме букв)
         private static readonly Regex rgx = new Regex(@"\W+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         public static void Main(string[] args)
         {
-            Regex rgx = new Regex(@"\W+", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-            string stringRus = rgx.Replace("«Не выходи из комнаты, не совершай ошибку.» ", String.Empty);
-            Console.WriteLine(stringRus);
-            Console.WriteLine(GetIndexPetrenko(stringRus));
+            //string stringRus = rgx.Replace("«Не выходи из комнаты, не совершай ошибку.» ", String.Empty);
+            //Console.WriteLine(stringRus);
+            //Console.WriteLine(GetIndexPetrenko(stringRus));
         }
 
         public static Dictionary<string, List<string>> ComparePetrenkoIndex(string[] rus, string[] eng)
@@ -26,7 +26,9 @@ namespace TMG_Programmers_test_2021__3
                 string stringRus = rgx.Replace(rus[i], String.Empty);
                 for (int c = 0; c < eng.Length; c++)
                 {
+                    //split line into body and comment/разделяем строку на основную часть и коментарий
                     var separation = eng[c].Split("|", StringSplitOptions.RemoveEmptyEntries);
+                    //remove unnecessary (punctuation marks and spaces)/убираем лишние (знаки препинания и пробелы)
                     var stringEng = rgx.Replace(separation[0], String.Empty);
                     var stringEngComment = rgx.Replace(separation[1], String.Empty);
 
