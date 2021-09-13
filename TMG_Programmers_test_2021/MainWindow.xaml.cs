@@ -24,7 +24,7 @@ namespace TMG_Programmers_test_2021
             InitializeComponent();
         }
 
-        private List<SummaryTable> SummaryTables { get; set; } = new List<SummaryTable>();
+        private List<StringResult> SummaryTables { get; set; } = new List<StringResult>();
 
 
         private async void Calculate_Click(object sender, RoutedEventArgs e)
@@ -60,10 +60,10 @@ namespace TMG_Programmers_test_2021
                     continue;
                 }
 
-                SummaryTables.Add(new SummaryTable(identifiers[i], response.Message));
+                SummaryTables.Add(new StringResult(identifiers[i], response.Message));
             }
             //display the table / выводим таблицу
-            tableView.ItemsSource = new ObservableCollection<SummaryTable>(SummaryTables);
+            tableView.ItemsSource = new ObservableCollection<StringResult>(SummaryTables);
 
             if (listOfInvalidIdentifiers.Count > 0)
             {

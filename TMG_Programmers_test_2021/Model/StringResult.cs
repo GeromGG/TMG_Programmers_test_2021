@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace TMG_Programmers_test_2021.Model
 {
-    public class SummaryTable
+    public class StringResult
     {
 
         private static readonly char[] _separators = new char[] { ' ', '.', ',', '—' };
@@ -11,7 +11,7 @@ namespace TMG_Programmers_test_2021.Model
         private static readonly string _pattern = @"[ӧауоыиэяюёеaeiіouäöüÄÖÜAEIІOUАЕЁИОУЫЭЮЯӦ]+";
         private static readonly Regex rgx = new Regex(_pattern);
 
-        public SummaryTable(string id, string text)
+        public StringResult(string id, string text)
         {
             if (id is not null && text is not null)
             {
